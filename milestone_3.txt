@@ -1,0 +1,37 @@
+use db_miles;
+
+/*1. Seleziona gli utenti che hanno postato almeno un video */
+select distinct u.username , m.type as "tipo di media caricato!"
+FROM users u
+INNER JOIN medias m ON u.id = m.user_id
+WHERE type like 'video';
+
+
+/*2. seleziona tutti i post senza Like (13)*/
+SELECT distinct post_id as "Numero like!" , p.title as "Titolo post!"
+FROM posts p
+LEFT JOIN likes l ON p.id = l.post_id
+WHERE l.post_id IS NULL;
+
+
+/*3. Conta il numero di like per ogni post (165)*/
+select distinct post_id as "Numero like!" , p.title as "Titolo post!"
+FROM posts p
+left JOIN likes l ON p.id = l.post_id
+WHERE l.post_id is NOT NULL;
+
+
+/*4. Ordina gli utenti per il numero di media caricati (25) */
+SELECT u.username, COUNT(m.id) AS "Numero media caricati!"
+FROM users u
+LEFT JOIN medias m ON u.id = m.user_id
+GROUP by u.id, u.username;
+
+/*5. Ordina gli utenti per totale di likes ricevuti nei loro posts (25)  */
+SELECT u.username, COUNT(l.post_id) AS "Somma like!"
+FROM users u
+LEFT JOIN likes l ON u.id = l.user_id
+GROUP by u.id, u.username
+ORDER BY COUNT(l.post_id) asc;
+
+
